@@ -1,39 +1,75 @@
+import { goto } from '$app/navigation';
+import { supabaseClient } from '$lib/supabase';
 import { writable } from 'svelte/store';
 
-export const programs = writable([]);
+export const programs = writable<ArrayLike<unknown> | []>([]);
 
 export const loadPrograms = async () => {
-    const programsFromDb = await prisma.program.findMany();
-    console.log('load programs');
-    console.log(programsFromDb);
-    
-    //programs.set(programsFromDb);
-    
+    const {data, error} = await supabaseClient
+    .from('Programs')
+    .select('*');
+
+    if(error) {
+        return console.error(error);
+    }
+    programs.set(data);    
 };
 loadPrograms();
 
-export const createProgram = async(program: Program) => {
-    console.log()
-    const data = await prisma.program.create({
-        data: { 
-            title: program.title,
-            endDate: program.endDate,
-            startDate: program.startDate,
-            completed: program.completed,
-         },
-      })
-      console.log(data)
-    // if(error) {
-    //     return console.error(error);
-    // }
+export const createProgram = async (name: string) => {
+    const { data, error } = await supabaseClient
+    .from('Programs')
+    .upsert({ name })
+    .select('*')
+
+    if(error) {
+        return console.error(error);
+    }
+    programs.update(cur => [...cur, data[0]]);
+    goto('/training');
 };
 
-export const deleteProgram = async(id: number) => {
-    console.log('delete program');
-    console.log(id);
+export const deleteProgram = async(id: number | unknown) => {
+    const {error} = await supabaseClient
+    .from('Programs')
+    .delete()
+    .match({id});
+    
+    if(error) {
+        return console.error(error);
+    }
+
+	programs.update((programs) => programs.filter((cur) => cur.id !== id));
+    goto('/training');
+
 };
 
-export const updateProgram = async(program: Program) => {
-    console.log('update program');
-    console.log(program);
+export const updateProgram = async(id: number | unknown, name: string, completed: boolean) => {
+    const { data, error } = await supabaseClient
+    .from('Programs')
+    .update({
+        name,
+        completed,
+    }).match({id});
+
+    if(error) {
+        return console.error('here',error);
+    }
+    
+	programs.update((programs) => {
+		let index = -1;
+		for (let i = 0; i < programs.length; i++) {
+			if (programs[i].id === id) {
+				index = i;
+				break;
+			}
+		}
+		if (index !== -1) {
+			programs[index].name = name;
+			programs[index].completed = completed;
+		}
+		return programs;
+	});
+
+    goto('/training');
 };
