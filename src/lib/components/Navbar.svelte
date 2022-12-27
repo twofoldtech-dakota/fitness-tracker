@@ -35,7 +35,7 @@
 			>
 		{/each}
 		<div class="p-3 flex-auto border-t-2 border-white hover:border-black">
-			<form action="/logout" method="POST" use:enhance={submitLogout}>
+			<form method="POST" use:enhance={submitLogout}>
 				<button type="submit">logout</button>
 			</form>
 		</div>
