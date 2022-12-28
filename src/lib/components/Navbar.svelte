@@ -10,7 +10,7 @@
 
 	const navItems: Array<NavItem> = [
 		{ text: 'training', url: 'training' },
-		{ text: 'nutrition', url: 'nutrition' },
+		// { text: 'nutrition', url: 'nutrition' },
 		{ text: 'settings', url: 'settings' }
 	];
 	$: currentRoute = $page.url.pathname;
@@ -24,7 +24,7 @@
 	};
 </script>
 
-<nav class="w-full fixed left-0 bg-white bottom-0">
+<nav class="w-full fixed left-0 bg-dark-200 text-white bottom-0">
 	<div class="w-full flex justify-center border-black border-t text-center text-xl items-center">
 		{#each navItems as navItem}
 			<a
