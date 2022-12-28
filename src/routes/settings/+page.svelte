@@ -8,14 +8,13 @@
 	<div class="flex justify-between items-center">
 		<h3 class="text-2xl">Programs</h3>
 		<a href="/training/new" class="px-2 py-1 rounded-xl flex bg-dark-300 text-primary-100">
-			<i class="mi mi-add text-2xl flex pr-1" />
-			new
+			<i class="mi mi-add text-2xl flex" />
 		</a>
 	</div>
 
 	<div class="mb-4">
 		Active program: <span class="absolute pl-3 pt-0.5"
-			><i class="mi mi-ban text-red-500 pt-1">none</i></span
+			><i class="mi mi-ban text-red-400 pt-1">none</i></span
 		>
 	</div>
 

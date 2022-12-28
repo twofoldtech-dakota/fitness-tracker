@@ -24,7 +24,7 @@
 	};
 </script>
 
-<nav class="w-full fixed left-0 bg-dark-200 text-white bottom-0">
+<nav class="w-full fixed left-0 bg-dark-100 text-white bottom-0">
 	<div class="w-full flex justify-center border-black border-t text-center text-xl items-center">
 		{#each navItems as navItem}
 			<a

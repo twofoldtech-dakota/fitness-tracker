@@ -37,11 +37,16 @@
 	};
 </script>
 
-<h3 class="text-3xl my-5">Edit {program.name}</h3>
-<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
-	<div class="flex">
-		<label for="name" class="flex-1">Name</label>
-		<input name="name" type="text" class="flex-1 border border-black" bind:value={program.name} />
+<h3 class="text-3xl my-5">Edit Program</h3>
+<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col p-8">
+	<div class="flex flex-col">
+		<label for="name" class="f">Name:</label>
+		<input
+			name="name"
+			type="text"
+			class="border border-black text-black rounded-xl leading-10 px-3"
+			bind:value={program.name}
+		/>
 	</div>
 
 	<!-- <div class="flex">
@@ -49,7 +54,7 @@
 		<input name="start" type="date" class="flex-1 border border-black" bind:value={start} />
 	</div> -->
 
-	<div class="flex">
+	<div class="flex flex-col">
 		<label for="completed" class="flex-1">Completed?</label>
 		<input
 			name="completed"

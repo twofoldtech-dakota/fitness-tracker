@@ -11,9 +11,9 @@
 				<a href="/training/{program.id}" class="text-3xl">
 					<i class="mi mi-edit-alt text-3xl text-blue-400" />
 				</a>
-				<a href="/training/{program.id}" class="text-3xl">
+				<!-- <a href="/training/{program.id}" class="text-3xl">
 					<i class="mi mi-close text-3xl text-red-400" />
-				</a>
+				</a> -->
 			</div>
 		</div>
 		<div class="flex flex-col">
