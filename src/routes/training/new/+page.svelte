@@ -2,8 +2,9 @@
 	import { supabaseClient } from '$lib/supabase';
 	import { createProgram } from '../../../stores/programStore';
 	import { z } from 'zod';
+	import type { PageData } from './$types';
 
-	// export let data: PageData;
+	export let data: PageData;
 
 	let loading = false;
 	let name = '';
@@ -15,7 +16,7 @@
 		try {
 			loading = true;
 			//const formDataIsValid = programSchema.parse({ name });
-			createProgram(name);
+			createProgram(name, data?.session?.user.id);
 		} catch (err) {
 			// const { fieldErrors: errors } = err.flatten();
 			// return {

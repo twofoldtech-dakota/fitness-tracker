@@ -10,12 +10,10 @@
 			loading = true;
 			const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 			if (error) throw error;
-			console.log('success logging in');
 		} catch (error) {
 			alert(error);
 		} finally {
 			loading = false;
-			console.log('login done');
 		}
 	};
 	const handleRegister = async () => {
@@ -23,12 +21,10 @@
 			loading = true;
 			const { error } = await supabaseClient.auth.signUp({ email, password });
 			if (error) throw error;
-			console.log('success registering');
 		} catch (error) {
 			alert(error);
 		} finally {
 			loading = false;
-			console.log('register done');
 		}
 	};
 

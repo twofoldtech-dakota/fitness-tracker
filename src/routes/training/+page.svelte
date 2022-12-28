@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Program from '$lib/components/Program.svelte';
+	import ProgramDetails from '$lib/components/ProgramDetails.svelte';
 	import { programs } from '../../stores/programStore';
 
 	let viewProgram = false;
@@ -25,8 +25,11 @@
 </script>
 
 <h1 class="text-4xl mb-4">Training</h1>
-<p><a href="/training/new" class="bg-primary-100 p-2 rounded-xl">+ Create a new program</a></p>
 <div class="mt-4">
+	{#if $programs.length == 0}
+		<a href="/training/new" class="bg-primary-100 p-2 rounded-xl">+ Create a new program</a>
+	{/if}
+
 	{#each $programs as program}
 		<div class="p-3 border">
 			<h3 class="text-2xl">{program.name}</h3>
@@ -39,9 +42,6 @@
 	{/each}
 
 	{#if viewProgram}
-		<div>{visibleProgram.id}</div>
-		<div>{visibleProgram.name}</div>
-		<div>{visibleProgram.completed}</div>
-		<div>{visibleProgram.start}</div>
+		<ProgramDetails program={visibleProgram} />
 	{/if}
 </div>

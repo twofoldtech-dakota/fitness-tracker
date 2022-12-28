@@ -10,8 +10,8 @@
 
 	const navItems: Array<NavItem> = [
 		{ text: 'training', url: 'training' },
-		{ text: 'nutrition', url: 'nutrition' }
-		// { text: "login", url: "login" },
+		{ text: 'nutrition', url: 'nutrition' },
+		{ text: 'settings', url: 'settings' }
 	];
 	$: currentRoute = $page.url.pathname;
 
@@ -28,7 +28,9 @@
 	<div class="w-full flex justify-center border-black border-t text-center text-xl items-center">
 		{#each navItems as navItem}
 			<a
-				class="p-3 flex-auto border-t-2 hover:border-black {'/' + navItem.url === currentRoute
+				class="p-3 flex-auto border-t-2 hover:border-black {currentRoute.includes(
+					navItem.url.toString()
+				)
 					? 'border-black'
 					: 'border-white '}"
 				href="/{navItem.url}">{navItem.text}</a

@@ -5,9 +5,12 @@ import { writable } from 'svelte/store';
 export const programs = writable<ArrayLike<unknown> | []>([]);
 
 export const loadPrograms = async () => {
+    
+    const user_id = (await supabaseClient.auth.getUser()).data.user?.id;
     const {data, error} = await supabaseClient
     .from('Programs')
-    .select('*');
+    .select('*')
+    .match({ user_id })
 
     if(error) {
         return console.error(error);
@@ -16,10 +19,11 @@ export const loadPrograms = async () => {
 };
 loadPrograms();
 
-export const createProgram = async (name: string) => {
+export const createProgram = async (name: string, user_id: string | unknown) => {
+    console.log(user_id);
     const { data, error } = await supabaseClient
     .from('Programs')
-    .upsert({ name })
+    .upsert({ name, user_id })
     .select('*')
 
     if(error) {
