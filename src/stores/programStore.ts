@@ -1,8 +1,14 @@
 import { goto } from '$app/navigation';
 import { supabaseClient } from '$lib/supabase';
 import { writable } from 'svelte/store';
-
-export const programs = writable<ArrayLike<unknown> | []>([]);
+interface IProgram {
+    name: string;
+    completed: boolean;
+    start: Date;
+    id: number;
+    active: boolean
+}
+export const programs = writable<ArrayLike<IProgram> | []>([]);
 
 export const loadPrograms = async () => {
     
@@ -19,18 +25,17 @@ export const loadPrograms = async () => {
 };
 loadPrograms();
 
-export const createProgram = async (name: string, user_id: string | unknown) => {
-    console.log(user_id);
+export const createProgram = async (name: string, active: boolean, user_id: string | unknown) => {
     const { data, error } = await supabaseClient
     .from('Programs')
-    .upsert({ name, user_id })
+    .upsert({ name, active, user_id })
     .select('*')
 
     if(error) {
         return console.error(error);
     }
     programs.update(cur => [...cur, data[0]]);
-    goto('/training');
+    goto('/settings');
 };
 
 export const deleteProgram = async(id: number | unknown) => {
@@ -44,16 +49,17 @@ export const deleteProgram = async(id: number | unknown) => {
     }
 
 	programs.update((programs) => programs.filter((cur) => cur.id !== id));
-    goto('/training');
+    goto('/settings');
 
 };
 
-export const updateProgram = async(id: number | unknown, name: string, completed: boolean) => {
+export const updateProgram = async(id: number | unknown, name: string, active: boolean, completed: boolean) => {
     const { data, error } = await supabaseClient
     .from('Programs')
     .update({
         name,
         completed,
+        active
     }).match({id});
 
     if(error) {
@@ -71,9 +77,10 @@ export const updateProgram = async(id: number | unknown, name: string, completed
 		if (index !== -1) {
 			programs[index].name = name;
 			programs[index].completed = completed;
+			programs[index].active = active;
 		}
 		return programs;
 	});
 
-    goto('/training');
+    goto('/settings');
 };

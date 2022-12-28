@@ -33,14 +33,16 @@
 {/if}
 <button on:click={() => isOverlayOpen.set(true)} class="bg-red-500">test</button>
 
-<div class="grid w-screen h-screen justify-items-center content-start bg-dark-200 text-white">
+<div class="grid w-full h-screen justify-items-center content-start bg-dark-200 text-white">
 	{#if data.session}
 		<Navbar />
-		<div class="p-4 w-full">
-			<a href="/">
-				<img class="mx-auto" alt="logo" />
-			</a>
-			<slot />
+		<div class="w-full pb-14">
+			<div class="w-full text-center bg-dark-100 py-4">
+				<a href="/" class="text-4xl text-primary-100"> Swole Tracker </a>
+			</div>
+			<section class="p-9">
+				<slot />
+			</section>
 		</div>
 	{:else}
 		<Auth />
