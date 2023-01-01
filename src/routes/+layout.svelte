@@ -6,8 +6,7 @@
 	import '../app.css';
 	import type { PageData } from './$types';
 	import Auth from '$lib/components/Auth.svelte';
-	import { isOverlayOpen } from '../stores/overlayStore';
-	import Overlay from '$lib/components/Overlay.svelte';
+	import { enhance, type SubmitFunction } from '$app/forms';
 
 	onMount(() => {
 		const {
@@ -21,6 +20,14 @@
 		};
 	});
 
+	const submitLogout: SubmitFunction = async ({ cancel }) => {
+		const { error } = await supabaseClient.auth.signOut();
+		if (error) {
+			console.log(error);
+		}
+		cancel();
+	};
+
 	export let data: PageData;
 </script>
 
@@ -28,19 +35,21 @@
 	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" />
 </svelte:head>
 
-{#if $isOverlayOpen}
-	<Overlay><p class="text-5xl">this is an overlay</p></Overlay>
-{/if}
-<button on:click={() => isOverlayOpen.set(true)} class="bg-red-500">test</button>
-
-<div class="grid w-full h-screen justify-items-center content-start bg-dark-200 text-white">
+<div class="grid w-full h-screen justify-items-center content-start">
 	{#if data.session}
 		<Navbar />
 		<div class="w-full pb-14">
-			<div class="w-full text-center bg-dark-100 py-4">
-				<a href="/" class="text-4xl text-primary-100"> Swole Tracker </a>
+			<div class="flex p-6 bg-base-300 justify-between items-center">
+				<div class="flex-1">
+					<a href="/" class="text-4xl text-accent">Logo</a>
+				</div>
+				<div class="flex-1 text-accent">
+					<form method="POST" use:enhance={submitLogout} class="text-right">
+						<button type="submit">logout</button>
+					</form>
+				</div>
 			</div>
-			<section class="p-9">
+			<section class="p-9 prose w-full max-w-full">
 				<slot />
 			</section>
 		</div>
@@ -48,18 +57,3 @@
 		<Auth />
 	{/if}
 </div>
-
-<style>
-	.mi {
-		font-size: 1.4rem;
-	}
-	/* Use this to make sure screen readers read something sensible when encountering the mi. If you are using the icons decoratively, you can omit the <span> */
-	.u-sr-only {
-		position: absolute;
-		left: -10000px;
-		top: auto;
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-	}
-</style>

@@ -1,7 +1,7 @@
 import { supabaseClient } from "$lib/supabase";
 
-export const load = ({ params }) => {
-    const fetchProgram = async (id) => {
+export const load = ({ params }: any) => {
+    const fetchProgram = async (id: any) => {
         const { data, error } = await supabaseClient.from('Programs').select('*').match({id});
         if(error) {
             return console.error(error);

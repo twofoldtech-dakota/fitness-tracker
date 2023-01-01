@@ -1,45 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { enhance, type SubmitFunction } from '$app/forms';
-	import { supabaseClient } from '$lib/supabase';
-
-	interface NavItem {
-		url: String;
-		text: String;
-	}
+	import type { NavItem } from '$lib/types';
 
 	const navItems: Array<NavItem> = [
-		{ text: 'training', url: 'training' },
-		// { text: 'nutrition', url: 'nutrition' },
-		{ text: 'settings', url: 'settings' }
+		{ text: 'training', url: '/training' },
+		{ text: 'nutrition', url: '/nutrition' },
+		{ text: 'settings', url: '/settings' }
 	];
-	$: currentRoute = $page.url.pathname;
-
-	const submitLogout: SubmitFunction = async ({ cancel }) => {
-		const { error } = await supabaseClient.auth.signOut();
-		if (error) {
-			console.log(error);
-		}
-		cancel();
-	};
+	$: currentRoute = '/' + $page.url.pathname.split('/')[1];
 </script>
 
-<nav class="w-full fixed left-0 bg-dark-100 text-white bottom-0">
-	<div class="w-full flex justify-center border-black border-t text-center text-xl items-center">
-		{#each navItems as navItem}
-			<a
-				class="p-3 flex-auto border-t-2 hover:border-black {currentRoute.includes(
-					navItem.url.toString()
-				)
-					? 'border-black'
-					: 'border-white '}"
-				href="/{navItem.url}">{navItem.text}</a
-			>
-		{/each}
-		<div class="p-3 flex-auto border-t-2 border-white hover:border-black">
-			<form method="POST" use:enhance={submitLogout}>
-				<button type="submit">logout</button>
-			</form>
-		</div>
-	</div>
+<nav class="btm-nav bg-base-300 z-10">
+	{#each navItems as navItem}
+		<a
+			class="text-accent hover:border-t-2 {currentRoute == navItem.url ? 'active' : ''}"
+			href={navItem.url}>{navItem.text}</a
+		>
+	{/each}
 </nav>

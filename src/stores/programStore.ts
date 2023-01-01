@@ -35,7 +35,7 @@ export const createProgram = async (name: string, active: boolean, user_id: stri
         return console.error(error);
     }
     programs.update(cur => [...cur, data[0]]);
-    goto('/settings');
+    goto('/settings/programs');
 };
 
 export const deleteProgram = async(id: number | unknown) => {
@@ -49,7 +49,7 @@ export const deleteProgram = async(id: number | unknown) => {
     }
 
 	programs.update((programs) => programs.filter((cur) => cur.id !== id));
-    goto('/settings');
+    goto('/settings/programs');
 
 };
 
@@ -82,5 +82,5 @@ export const updateProgram = async(id: number | unknown, name: string, active: b
 		return programs;
 	});
 
-    goto('/settings');
+    goto('/settings/programs');
 };

@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { supabaseClient } from '$lib/supabase';
 	import { createProgram } from '../../../stores/programStore';
-	import { z } from 'zod';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -9,9 +7,7 @@
 	let loading = false;
 	let name = '';
 	let active = false;
-	const programSchema = z.object({
-		name: z.string({ required_error: 'Name is required' }).min(1).max(64).trim()
-	});
+	let completed = false;
 
 	const handleSubmit = async () => {
 		try {
@@ -33,46 +29,68 @@
 		if (active == null) active = false;
 		else if (active == false) active = true;
 		else active = false;
-		console.log('active', active);
+	};
+
+	const updateCompletedStatus = async () => {
+		if (completed == null) completed = false;
+		else if (completed == false) completed = true;
+		else completed = false;
 	};
 </script>
 
-<div class="flex flex-col border border-white rounded-xl p-8 bg-dark-100">
-	<a href="/settings" class="underline text-sm">
-		<i class="mi mi-arrow-left">
-			<span class="u-sr-only">back to Settings</span>
-		</i>
+<div class="flex flex-col p-8">
+	<a href="/settings/programs" class="link text-sm">
+		<i class="mi mi-arrow-left"> back to Settings</i>
 	</a>
-	<h3 class="text-3xl my-5">Create a new Program</h3>
+	<h1 class="my-8">Edit Program</h1>
 	<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
-		<label for="name" class="pb-1">Name</label>
-		<input
-			name="name"
-			type="text"
-			class="border leading-9 px-3 rounded-lg text-black mb-4"
-			bind:value={name}
-		/>
+		<div class="form-control">
+			<label class="label">
+				<span class="label-text">Program Name</span>
+				<input
+					name="name"
+					type="text"
+					class="input input-bordered input-accent w-full"
+					bind:value={name}
+				/>
+			</label>
+		</div>
+		<div class="form-control">
+			<label class="label cursor-pointer">
+				<span class="label-text">Completed?</span>
+				<input
+					name="completed"
+					type="checkbox"
+					checked={completed}
+					on:change={() => updateCompletedStatus()}
+					class="checkbox checkbox-accent"
+				/>
+			</label>
+		</div>
+		<div class="form-control">
+			<label class="label cursor-pointer">
+				<span class="label-text">Active?</span>
+				<input
+					name="active"
+					type="checkbox"
+					checked={active}
+					on:change={() => updateActiveStatus()}
+					class="checkbox checkbox-accent"
+				/>
+			</label>
+		</div>
 
-		<label for="active" class="flex-1">Active?</label>
-		<input
-			name="active"
-			type="checkbox"
-			checked={active}
-			on:change={() => updateActiveStatus(active)}
-			class="mr-2 form-checkbox h-5 w-5 mb-4"
-		/>
+		<div class="flex justify-between items-center border-t border-accent pt-7 mt-7">
+			<div />
+			<div>
+				<button type="submit" class="btn btn-primary">
+					{#if loading}Loading...
+					{:else}<i class="mi mi-check" /> Create
+					{/if}
+				</button>
 
-		<div class="flex justify-between items-center">
-			<button
-				type="submit"
-				class="border border-primary-100 pl-2 pr-3 py-1 rounded-lg text-md text-primary-100"
-			>
-				{#if loading}Loading...
-				{:else}<i class="mi mi-add" /> Create
-				{/if}
-			</button>
-
-			<a href="/settings" class="border p-2 rounded-lg">Cancel</a>
+				<a href="/settings/programs" class="btn btn-outline btn-accent">Cancel</a>
+			</div>
 		</div>
 	</form>
 </div>

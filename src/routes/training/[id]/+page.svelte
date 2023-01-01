@@ -1,15 +1,12 @@
 <script lang="ts">
-	import { supabaseClient } from '$lib/supabase';
 	import { updateProgram, deleteProgram } from '../../../stores/programStore';
-	import { z } from 'zod';
 	import type { Program } from '$lib/types';
+	import Overlay from '$lib/components/Overlay.svelte';
+	import { isOverlayOpen } from '../../../stores/overlayStore';
 
 	export let data;
-	let { program } = data;
+	let program: Program = data.program;
 	let loading = false;
-	const programSchema = z.object({
-		name: z.string({ required_error: 'Name is required' }).min(1).max(64).trim()
-	});
 
 	const handleSubmit = async () => {
 		try {
@@ -28,79 +25,98 @@
 		} catch (err) {
 			console.error(err);
 		} finally {
+			isOverlayOpen.set(false);
 		}
 	};
 
-	const updateCompletedStatus = async () => {
+	const updateCompletedStatus = async (program: Program) => {
 		if (program.completed == null) program.completed = false;
 		else if (program.completed == false) program.completed = true;
 		else program.completed = false;
 	};
 
-	const updateActiveStatus = async () => {
+	const updateActiveStatus = async (program: Program) => {
 		if (program.active == null) program.active = false;
 		else if (program.active == false) program.active = true;
 		else program.active = false;
 	};
 </script>
 
-<div class="flex flex-col border border-white rounded-xl p-8 bg-dark-100">
-	<a href="/settings" class="underline text-sm">
-		<i class="mi mi-arrow-left">
-			<span class="u-sr-only">back to Settings</span>
-		</i>
+{#if $isOverlayOpen}
+	<Overlay title="Delete this program forever?">
+		<form method="POST" on:submit|preventDefault={handleDelete} class="flex flex-col">
+			<div class="text-2xl font-bold text-primary-content mb-8">
+				Are you sure you want to delete this program forever? You will not be able to retieve this
+				program in the future.
+			</div>
+			<button type="submit" class="btn btn-error"> Yes, delete forever. </button>
+		</form>
+	</Overlay>
+{/if}
+<div class="flex flex-col p-8">
+	<a href="/settings/programs" class="link text-sm">
+		<i class="mi mi-arrow-left"> back to Settings</i>
 	</a>
 
-	<h3 class="text-3xl my-3">Edit Program</h3>
+	<h1 class="my-8">Edit Program</h1>
 	<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
-		<label for="name" class="pb-1">Name:</label>
-		<input
-			name="name"
-			type="text"
-			class="border leading-9 px-3 rounded-lg text-black mb-4"
-			bind:value={program.name}
-		/>
+		<div class="form-control">
+			<label class="label">
+				<span class="label-text">Program Name</span>
+				<input
+					name="name"
+					type="text"
+					class="input input-bordered input-accent w-full"
+					bind:value={program.name}
+				/>
+			</label>
+		</div>
+		<div class="form-control">
+			<label class="label cursor-pointer">
+				<span class="label-text">Completed?</span>
+				<input
+					name="completed"
+					type="checkbox"
+					checked={program.completed}
+					on:change={() => updateCompletedStatus(program)}
+					class="checkbox checkbox-accent"
+				/>
+			</label>
+		</div>
+		<div class="form-control">
+			<label class="label cursor-pointer">
+				<span class="label-text">Active?</span>
+				<input
+					name="active"
+					type="checkbox"
+					checked={program.active}
+					on:change={() => updateActiveStatus(program)}
+					class="checkbox checkbox-accent"
+				/>
+			</label>
+		</div>
 
-		<!-- <div class="flex">
-			<label for="start" class="flex-1">Start Date</label>
-			<input name="start" type="date" class="flex-1 border border-black" bind:value={start} />
-		</div> -->
-
-		<label for="completed" class="flex-1">Completed?</label>
-		<input
-			name="completed"
-			type="checkbox"
-			checked={program.completed}
-			on:change={() => updateCompletedStatus(program.completed)}
-			class="mr-2 form-checkbox h-5 w-5 mb-4"
-		/>
-
-		<label for="active" class="flex-1">Active?</label>
-		<input
-			name="active"
-			type="checkbox"
-			checked={program.active}
-			on:change={() => updateActiveStatus(program.active)}
-			class="mr-2 form-checkbox h-5 w-5 mb-4"
-		/>
-
-		<div class="flex justify-between items-center">
-			<div>
+		<div class="flex justify-between items-center border-t border-accent pt-7 mt-7">
+			<div
+				class="tooltip tooltip-right"
+				data-tip={program.active
+					? 'Not allowed to delete active programs'
+					: 'Delete this program forever?'}
+			>
 				<button
-					type="submit"
-					class="border border-primary-100 pl-2 pr-3 py-1 rounded-lg text-md text-primary-100"
+					on:click|preventDefault={() => isOverlayOpen.set(true)}
+					class="btn btn-error btn-outline {program.active ? 'btn-disabled' : ''}"
+					><i class="mi mi-delete" /> delete</button
 				>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary">
 					{#if loading}Loading...
 					{:else}<i class="mi mi-check" /> Save
 					{/if}
 				</button>
 
-				<a href="/settings" class="border p-2 rounded-lg">Cancel</a>
-			</div>
-			<div>
-				<button on:click={handleDelete} class="text-red-400 pl-2 pr-3 py-1 text-2xl"
-					><i class="mi mi-delete" /></button
-				>
+				<a href="/settings/programs" class="btn btn-outline btn-accent">Cancel</a>
 			</div>
 		</div>
 	</form>

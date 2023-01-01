@@ -5,7 +5,7 @@
 </script>
 
 <main>
-	<h1 class="text-4xl">Dashboard</h1>
+	<h1>Dashboard</h1>
 	{#if data.session}
 		<p>Welcome, {data.session.user.email}</p>
 		<p>graph of weekly volume, intensity, weight, nutirition, water, etc..</p>

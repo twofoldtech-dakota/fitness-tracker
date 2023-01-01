@@ -2,26 +2,37 @@
 module.exports = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
+    screens: {
+      'mb': {'max': '639px'},
+      'sm': '640px',
+      // => @media (min-width: 640px) { ... }
+
+      'md': '768px',
+      // => @media (min-width: 768px) { ... }
+
+      'lg': '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      'xl': '1280px',
+      // => @media (min-width: 1280px) { ... }
+
+      '2xl': '1536px',
+      // => @media (min-width: 1536px) { ... }
+    },
     extend: {
       colors: {
-        grey: '#68798D',
-        dark: {
-          100: '#292E38',
-          200: '#1C1F26',
-          300: '#0E1116',
-        },
-        primary: {
-          100: '#66EBA6',
-          200: '#00A851',
-          300: '#00A851'
-        },
-        secondary: {
-          100: '#D64CF6',
-          200: '#D64CF6',
-        },
-        white: '#fff'
       }
     },
   },
-  plugins: []
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  daisyui: {
+    styled: true,
+    themes: ['dark', 'light'],
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
+    prefix: "",
+    darkTheme: "dark",
+  },
 };
