@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { updateProgram, deleteProgram } from '../../../stores/programStore';
-	import type { Program } from '$lib/types';
+	import type { Day, Program } from '$lib/types';
 	import Overlay from '$lib/components/Overlay.svelte';
 	import { isOverlayOpen } from '../../../stores/overlayStore';
 
@@ -40,6 +40,12 @@
 		else if (program.active == false) program.active = true;
 		else program.active = false;
 	};
+
+	const updateMondayStatus = async (program: Program) => {
+		if (program.monday == null) program.monday = program.monday;
+		else if (program.monday == false) program.monday = true;
+		else program.monday = false;
+	};
 </script>
 
 {#if $isOverlayOpen}
@@ -68,6 +74,19 @@
 					type="text"
 					class="input input-bordered input-accent w-full"
 					bind:value={program.name}
+				/>
+			</label>
+		</div>
+		<div>Week</div>
+		<div class="form-control">
+			<label class="label cursor-pointer">
+				<span class="label-text">Monday</span>
+				<input
+					name="monday"
+					type="checkbox"
+					checked={program.monday}
+					on:change={() => updateDayStatus(program.monday)}
+					class="checkbox checkbox-accent"
 				/>
 			</label>
 		</div>

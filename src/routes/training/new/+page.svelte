@@ -8,6 +8,13 @@
 	let name = '';
 	let active = false;
 	let completed = false;
+	let monday = false;
+	let tuesday = false;
+	let wednesday = false;
+	let thursday = false;
+	let friday = false;
+	let saturday = false;
+	let sunday = false;
 
 	const handleSubmit = async () => {
 		try {
@@ -36,13 +43,31 @@
 		else if (completed == false) completed = true;
 		else completed = false;
 	};
+
+	const updateMondayStatus = async () => {
+		if (monday == null) monday = false;
+		else if (monday == false) monday = true;
+		else monday = false;
+	};
+
+	const updateTuesdayStatus = async () => {
+		if (tuesday == null) tuesday = false;
+		else if (tuesday == false) tuesday = true;
+		else tuesday = false;
+	};
+
+	const updateStatus = async (status: boolean) => {
+		if (status == null) status = false;
+		else if (status == false) status = true;
+		else status = false;
+	};
 </script>
 
 <div class="flex flex-col p-8">
 	<a href="/settings/programs" class="link text-sm">
 		<i class="mi mi-arrow-left"> back to Settings</i>
 	</a>
-	<h1 class="my-8">Edit Program</h1>
+	<h1 class="my-8">Create a new program</h1>
 	<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
 		<div class="form-control">
 			<label class="label">
@@ -53,6 +78,83 @@
 					class="input input-bordered input-accent w-full"
 					bind:value={name}
 				/>
+			</label>
+		</div>
+		<div class="form-control">
+			<label class="label cursor-pointer flex justify-start">
+				<span class="label-text">Week</span>
+				<div class="p-2">
+					<label class="label cursor-pointer">
+						<span class="label-text">Monday</span>
+						<input
+							name="monday"
+							type="checkbox"
+							checked={monday}
+							on:change={() => updateMondayStatus()}
+							class="checkbox checkbox-accent"
+						/>
+					</label>
+					<label class="label cursor-pointer">
+						<span class="label-text">Tuesday</span>
+						<input
+							name="tuesday"
+							type="checkbox"
+							checked={tuesday}
+							on:change={() => updateStatus(tuesday)}
+							class="checkbox checkbox-accent"
+						/>
+					</label>
+					<label class="label cursor-pointer">
+						<span class="label-text">Wednesday</span>
+						<input
+							name="wednesday"
+							type="checkbox"
+							checked={wednesday}
+							on:change={() => updateStatus(wednesday)}
+							class="checkbox checkbox-accent"
+						/>
+					</label>
+					<label class="label cursor-pointer">
+						<span class="label-text">Thursday</span>
+						<input
+							name="thursday"
+							type="checkbox"
+							checked={thursday}
+							on:change={() => updateStatus(thursday)}
+							class="checkbox checkbox-accent"
+						/>
+					</label>
+					<label class="label cursor-pointer">
+						<span class="label-text">Friday</span>
+						<input
+							name="friday"
+							type="checkbox"
+							checked={friday}
+							on:change={() => updateStatus(friday)}
+							class="checkbox checkbox-accent"
+						/>
+					</label>
+					<label class="label cursor-pointer">
+						<span class="label-text">Saturday</span>
+						<input
+							name="saturday"
+							type="checkbox"
+							checked={saturday}
+							on:change={() => updateStatus(saturday)}
+							class="checkbox checkbox-accent"
+						/>
+					</label>
+					<label class="label cursor-pointer">
+						<span class="label-text">Sunday</span>
+						<input
+							name="sunday"
+							type="checkbox"
+							checked={sunday}
+							on:change={() => updateStatus(sunday)}
+							class="checkbox checkbox-accent"
+						/>
+					</label>
+				</div>
 			</label>
 		</div>
 		<div class="form-control">

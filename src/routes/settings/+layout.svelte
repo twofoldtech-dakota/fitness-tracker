@@ -12,8 +12,8 @@
 </script>
 
 <h1 class="w-full">Settings</h1>
-<div class="flex w-full mb:flex-col">
-	<div class="sm:border-r-2 border-accent mb:w-full mb:block mb:border-b-2">
+<div class="flex w-full mb-max:flex-col">
+	<div class="sm:border-r-2 border-accent mb-max:w-full mb-max:block mb-max:border-b-2">
 		<div class="flex flex-col">
 			{#each navItems as navItem}
 				<a
@@ -27,7 +27,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="px-7 pb-7 mb:w-full mb:block mb:bg-base-200 pt-7">
+	<div class="px-7 pb-7 mb-max:w-full mb-max:block mb-max:bg-base-200 pt-7">
 		<slot />
 	</div>
 </div>

@@ -3,7 +3,7 @@ module.exports = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     screens: {
-      'mb': {'max': '639px'},
+      'mb-max': {'max': '639px'},
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
 
