@@ -1,12 +1,21 @@
 import { goto } from '$app/navigation';
 import { supabaseClient } from '$lib/supabase';
+import type { Day, Program } from '$lib/types';
 import { writable } from 'svelte/store';
 interface IProgram {
     name: string;
     completed: boolean;
     start: Date;
     id: number;
-    active: boolean
+    active: boolean,
+    days: Array<Day>,
+    monday: boolean,
+    tuesday: boolean,
+    wednesday: boolean,
+    thursday: boolean,
+    friday: boolean,
+    saturday: boolean,
+    sunday: boolean
 }
 export const programs = writable<ArrayLike<IProgram> | []>([]);
 
@@ -21,15 +30,25 @@ export const loadPrograms = async () => {
     if(error) {
         return console.error(error);
     }
-    programs.set(data);    
+    programs.set(data);   
 };
 loadPrograms();
 
-export const createProgram = async (name: string, active: boolean, user_id: string | unknown) => {
+export const createProgram = async (name: string, active: boolean, week: Array<Day>, user_id: string | unknown) => {
     const { data, error } = await supabaseClient
     .from('Programs')
-    .upsert({ name, active, user_id })
-    .select('*')
+    .upsert({ 
+        name, 
+        active, 
+        monday: week[0].active, 
+        tuesday: week[1].active, 
+        wednesday: week[2].active, 
+        thursday: week[3].active, 
+        friday: week[4].active, 
+        saturday: week[5].active, 
+        sunday: week[6].active, 
+        user_id,  
+    }).select('*')
 
     if(error) {
         return console.error(error);
@@ -53,14 +72,21 @@ export const deleteProgram = async(id: number | unknown) => {
 
 };
 
-export const updateProgram = async(id: number | unknown, name: string, active: boolean, completed: boolean) => {
+export const updateProgram = async(program: Program) => {
     const { data, error } = await supabaseClient
     .from('Programs')
     .update({
-        name,
-        completed,
-        active
-    }).match({id});
+        name: program.name,
+        completed: program.completed,
+        active: program.active,
+        monday: program.monday,
+        tuesday: program.tuesday,
+        wednesday: program.wednesday,
+        thursday: program.thursday,
+        friday: program.friday,
+        saturday: program.saturday,
+        sunday: program.sunday,
+    }).match({id: program.id});
 
     if(error) {
         return console.error('here',error);
@@ -69,15 +95,22 @@ export const updateProgram = async(id: number | unknown, name: string, active: b
 	programs.update((programs) => {
 		let index = -1;
 		for (let i = 0; i < programs.length; i++) {
-			if (programs[i].id === id) {
+			if (programs[i].id === program.id) {
 				index = i;
 				break;
 			}
 		}
 		if (index !== -1) {
-			programs[index].name = name;
-			programs[index].completed = completed;
-			programs[index].active = active;
+			programs[index].name = program.name;
+			programs[index].completed = program.completed;
+			programs[index].active = program.active;
+			programs[index].monday = program.monday;
+			programs[index].tuesday = program.tuesday;
+			programs[index].wednesday = program.wednesday;
+			programs[index].thursday = program.thursday;
+			programs[index].friday = program.friday;
+			programs[index].saturday = program.saturday;
+			programs[index].sunday = program.sunday;
 		}
 		return programs;
 	});

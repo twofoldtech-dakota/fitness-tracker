@@ -32,7 +32,9 @@
 </script>
 
 <svelte:head>
-	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" />
+	<!-- <link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" />
+	 -->
+	<script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
 </svelte:head>
 
 <div class="grid w-full h-screen justify-items-center content-start">
@@ -45,11 +47,14 @@
 				</div>
 				<div class="flex-1 text-accent">
 					<form method="POST" use:enhance={submitLogout} class="text-right">
-						<button type="submit">logout</button>
+						<button type="submit" class="btn hover:text-accent items-center hover:underline">
+							<iconify-icon icon="lucide:log-out" width="24" />
+							<span class="pl-1">logout</span>
+						</button>
 					</form>
 				</div>
 			</div>
-			<section class="p-9 prose w-full max-w-full">
+			<section class="p-9 prose w-full">
 				<slot />
 			</section>
 		</div>
@@ -57,3 +62,9 @@
 		<Auth />
 	{/if}
 </div>
+
+<style>
+	.prose {
+		max-width: 100% !important;
+	}
+</style>

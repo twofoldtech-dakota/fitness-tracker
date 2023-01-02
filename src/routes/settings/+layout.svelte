@@ -13,21 +13,22 @@
 
 <h1 class="w-full">Settings</h1>
 <div class="flex w-full mb-max:flex-col">
-	<div class="sm:border-r-2 border-accent mb-max:w-full mb-max:block mb-max:border-b-2">
-		<div class="flex flex-col">
+	<div class="sm:border-r-2 mb-max:w-full border-base-content mb-max:block mb-max:border-b-2">
+		<div class="flex sm:flex-col mb-max:text-center">
 			{#each navItems as navItem}
 				<a
-					class="link flex-1 rounded-lg p-4 hover:text-secondary hover:bg-base-300 {currentRoute ==
+					class="no-underline flex items-center justify-center link flex-1 p-4 hover:text-accent {currentRoute ==
 					navItem.url
-						? 'text-accent bg-base-300'
-						: ''}"
+						? 'text-accent bg-base-300 font-bold mb-max:border-b-2 mb-max:rounded-t-2xl sm:rounded-l-2xl sm:border-r border-accent'
+						: 'hover:underline'}"
 					href={navItem.url}
-					>{navItem.text}
+				>
+					{navItem.text}
 				</a>
 			{/each}
 		</div>
 	</div>
-	<div class="px-7 pb-7 mb-max:w-full mb-max:block mb-max:bg-base-200 pt-7">
+	<div class="px-7 pb-7 w-full mb-max:bg-base-200 mb-max:pt-5">
 		<slot />
 	</div>
 </div>

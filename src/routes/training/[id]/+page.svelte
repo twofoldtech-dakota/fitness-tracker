@@ -11,7 +11,7 @@
 	const handleSubmit = async () => {
 		try {
 			loading = true;
-			updateProgram(program.id, program.name, program.active, program.completed);
+			updateProgram(program);
 		} catch (err) {
 			console.error(err);
 		} finally {
@@ -41,10 +41,44 @@
 		else program.active = false;
 	};
 
-	const updateMondayStatus = async (program: Program) => {
-		if (program.monday == null) program.monday = program.monday;
-		else if (program.monday == false) program.monday = true;
-		else program.monday = false;
+	const updateDayStatus = async (program: Program, dayName: string) => {
+		switch (dayName) {
+			case 'monday':
+				if (program.monday == null) program.monday = false;
+				else if (program.monday == false) program.monday = true;
+				else program.monday = false;
+				break;
+			case 'tuesday':
+				if (program.tuesday == null) program.tuesday = false;
+				else if (program.tuesday == false) program.tuesday = true;
+				else program.tuesday = false;
+				break;
+			case 'wednesday':
+				if (program.wednesday == null) program.wednesday = false;
+				else if (program.wednesday == false) program.wednesday = true;
+				else program.wednesday = false;
+				break;
+			case 'thursday':
+				if (program.thursday == null) program.thursday = false;
+				else if (program.thursday == false) program.thursday = true;
+				else program.thursday = false;
+				break;
+			case 'friday':
+				if (program.friday == null) program.friday = false;
+				else if (program.friday == false) program.friday = true;
+				else program.friday = false;
+				break;
+			case 'saturday':
+				if (program.saturday == null) program.saturday = false;
+				else if (program.saturday == false) program.saturday = true;
+				else program.saturday = false;
+				break;
+			case 'sunday':
+				if (program.sunday == null) program.sunday = false;
+				else if (program.sunday == false) program.sunday = true;
+				else program.sunday = false;
+				break;
+		}
 	};
 </script>
 
@@ -59,84 +93,166 @@
 		</form>
 	</Overlay>
 {/if}
-<div class="flex flex-col p-8">
-	<a href="/settings/programs" class="link text-sm">
-		<i class="mi mi-arrow-left"> back to Settings</i>
-	</a>
+<div class="block w-full max-w-md m-auto">
+	<div class="flex flex-col">
+		<a
+			href="/settings/programs"
+			class="link text-sm flex items-center gap-2 hover:text-accent w-40 text-accent"
+		>
+			<iconify-icon icon="lucide:arrow-left-circle" width="24" />
+			<span>back to Settings</span>
+		</a>
+		<h1 class="my-8">Edit program</h1>
+		<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
+			<div class="form-control">
+				<label class="label">
+					<input
+						name="name"
+						type="text"
+						class="input input-bordered w-full max-w-xs"
+						placeholder="Program Name..."
+						bind:value={program.name}
+					/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer px-0">
+					<div
+						class="tooltip tooltip-right w-[160px] text-left"
+						data-tip="Pick the days you would like to train each week by selected them"
+					>
+						<span class="label-text">Training Days </span>
+						<iconify-icon class="text-accent" icon="lucide:info" width="16" />
+					</div>
+					<div class="flex flex-wrap flex-1 justify-start">
+						<label class="w-28 label cursor-pointer">
+							<span class="label-text">Monday</span>
+							<input
+								name="monday"
+								type="checkbox"
+								checked={program.monday}
+								on:change={() => updateDayStatus(program, 'monday')}
+								class="checkbox"
+							/>
+						</label>
+						<label class="w-28 label cursor-pointer">
+							<span class="label-text">Tuesday</span>
+							<input
+								name="tuesday"
+								type="checkbox"
+								checked={program.tuesday}
+								on:change={() => updateDayStatus(program, 'tuesday')}
+								class="checkbox"
+							/>
+						</label>
+						<label class="w-28 label cursor-pointer">
+							<span class="label-text">Wednesday</span>
+							<input
+								name="wednesday"
+								type="checkbox"
+								checked={program.wednesday}
+								on:change={() => updateDayStatus(program, 'wednesday')}
+								class="checkbox"
+							/>
+						</label>
+						<label class="w-28 label cursor-pointer">
+							<span class="label-text">Thursday</span>
+							<input
+								name="thursday"
+								type="checkbox"
+								checked={program.thursday}
+								on:change={() => updateDayStatus(program, 'thursday')}
+								class="checkbox"
+							/>
+						</label>
+						<label class="w-28 label cursor-pointer">
+							<span class="label-text">Friday</span>
+							<input
+								name="friday"
+								type="checkbox"
+								checked={program.friday}
+								on:change={() => updateDayStatus(program, 'friday')}
+								class="checkbox"
+							/>
+						</label>
+						<label class="w-28 label cursor-pointer">
+							<span class="label-text">Saturday</span>
+							<input
+								name="saturday"
+								type="checkbox"
+								checked={program.saturday}
+								on:change={() => updateDayStatus(program, 'saturday')}
+								class="checkbox"
+							/>
+						</label>
+						<label class="w-28 label cursor-pointer">
+							<span class="label-text">Sunday</span>
+							<input
+								name="sunday"
+								type="checkbox"
+								checked={program.sunday}
+								on:change={() => updateDayStatus(program, 'sunday')}
+								class="checkbox"
+							/>
+						</label>
+					</div>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="flex justify-start flex-1 label cursor-pointer">
+					<span class="label-text w-[160px]">Completed?</span>
+					<input
+						name="completed"
+						type="checkbox"
+						checked={program.completed}
+						on:change={() => updateCompletedStatus(program)}
+						class="checkbox"
+					/>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="flex justify-start flex-1 label cursor-pointer">
+					<span class="label-text w-[160px]">Active?</span>
+					<input
+						name="active"
+						type="checkbox"
+						checked={program.active}
+						on:change={() => updateActiveStatus(program)}
+						class="checkbox"
+					/>
+				</label>
+			</div>
 
-	<h1 class="my-8">Edit Program</h1>
-	<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
-		<div class="form-control">
-			<label class="label">
-				<span class="label-text">Program Name</span>
-				<input
-					name="name"
-					type="text"
-					class="input input-bordered input-accent w-full"
-					bind:value={program.name}
-				/>
-			</label>
-		</div>
-		<div>Week</div>
-		<div class="form-control">
-			<label class="label cursor-pointer">
-				<span class="label-text">Monday</span>
-				<input
-					name="monday"
-					type="checkbox"
-					checked={program.monday}
-					on:change={() => updateDayStatus(program.monday)}
-					class="checkbox checkbox-accent"
-				/>
-			</label>
-		</div>
-		<div class="form-control">
-			<label class="label cursor-pointer">
-				<span class="label-text">Completed?</span>
-				<input
-					name="completed"
-					type="checkbox"
-					checked={program.completed}
-					on:change={() => updateCompletedStatus(program)}
-					class="checkbox checkbox-accent"
-				/>
-			</label>
-		</div>
-		<div class="form-control">
-			<label class="label cursor-pointer">
-				<span class="label-text">Active?</span>
-				<input
-					name="active"
-					type="checkbox"
-					checked={program.active}
-					on:change={() => updateActiveStatus(program)}
-					class="checkbox checkbox-accent"
-				/>
-			</label>
-		</div>
-
-		<div class="flex justify-between items-center border-t border-accent pt-7 mt-7">
-			<div
-				class="tooltip tooltip-right"
-				data-tip={program.active
-					? 'Not allowed to delete active programs'
-					: 'Delete this program forever?'}
-			>
-				<button
-					on:click|preventDefault={() => isOverlayOpen.set(true)}
-					class="btn btn-error btn-outline {program.active ? 'btn-disabled' : ''}"
-					><i class="mi mi-delete" /> delete</button
+			<div class="flex justify-between items-center border-t border-base-content pt-7 mt-7">
+				<div
+					class="tooltip tooltip-right"
+					data-tip={program.active
+						? 'Not allowed to delete active programs'
+						: 'Delete this program forever?'}
 				>
-			</div>
-			<div>
-				<button type="submit" class="btn btn-primary">
-					{#if loading}Loading...
-					{:else}<i class="mi mi-check" /> Save
-					{/if}
-				</button>
+					<button
+						on:click|preventDefault={() => isOverlayOpen.set(true)}
+						class="btn btn-outline {program.active ? 'btn-disabled' : ''}"
+					>
+						<iconify-icon icon="lucide:trash-2" width="24" />
+						<span class="pl-1">delete</span>
+					</button>
+				</div>
+				<div>
+					<button type="submit" class="btn {loading == true ? 'loading' : 'btn-primary'}">
+						{#if loading}Loading...
+						{:else}
+							<iconify-icon icon="lucide:check" width="24" />
+							<span class="pl-1">save</span>
+						{/if}
+					</button>
 
-				<a href="/settings/programs" class="btn btn-outline btn-accent">Cancel</a>
+					<a href="/settings/programs" class="btn btn-outline">
+						<iconify-icon icon="lucide:x" width="24" />
+						<span class="pl-1">cancel</span>
+					</a>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 </div>

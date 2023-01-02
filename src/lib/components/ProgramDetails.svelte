@@ -5,9 +5,16 @@
 </script>
 
 <div class="flex flex-col">
-	<div>id: {program.id}</div>
-	<div>name: {program.name}</div>
-	<div>completed: {program.completed}</div>
-	<div>start date: {program.start}</div>
-	<div>active: {program.active}</div>
+	<div>
+		Weekly Split:
+		<div class="px-4">
+			<div>monday: {program.monday == true ? 'training' : 'rest'}</div>
+			<div>tuesday: {program.tuesday == true ? 'training' : 'rest'}</div>
+			<div>wednesday: {program.wednesday == true ? 'training' : 'rest'}</div>
+			<div>thursday: {program.thursday == true ? 'training' : 'rest'}</div>
+			<div>friday: {program.friday == true ? 'training' : 'rest'}</div>
+			<div>saturday: {program.saturday == true ? 'training' : 'rest'}</div>
+			<div>sunday: {program.sunday == true ? 'training' : 'rest'}</div>
+		</div>
+	</div>
 </div>

@@ -3,14 +3,15 @@ export type Program = {
     completed: boolean,
     start: Date,
     id: number,
-    active: boolean
-    monday: Day,
-    tuesday: Day,
-    wednesday: Day,
-    thursday: Day,
-    friday: Day,
-    saturday: Day,
-    sunday: Day
+    active: boolean,
+    days: Array<Day>,
+    monday: boolean,
+    tuesday: boolean,
+    wednesday: boolean,
+    thursday: boolean,
+    friday: boolean,
+    saturday: boolean,
+    sunday: boolean
 }
 
 export type Lift = {
@@ -18,10 +19,12 @@ export type Lift = {
 }
 export type Day = {
     name: string,
-    lifts: Array<Lift>
+    lifts: Array<Lift>,
+    active: boolean
 }
 
 export interface NavItem {
     url: string;
     text: string;
+    icon: string;
 }

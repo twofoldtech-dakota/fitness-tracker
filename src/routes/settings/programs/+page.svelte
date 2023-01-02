@@ -3,32 +3,57 @@
 	import { programs } from '../../../stores/programStore';
 </script>
 
-<div class="flex justify-between items-center pb-4 border-b border-accent mb-7">
+<div class="flex justify-between items-center pb-4 border-b border-base-content mb-7">
 	<div class="text-3xl">Programs</div>
-	<a href="/training/new" class="btn btn-accent btn-sm">
-		<i class="mi mi-add text-xl flex" /> create
+	<a href="/training/new" class="btn btn-outline btn-accent">
+		<iconify-icon icon="lucide:plus-square" width="24" /><span class="pl-1">new</span>
 	</a>
 </div>
-
-{#each $programs as program}
-	<div
-		class="card w-full shadow-xl mb-7 border border-primary indicator {program.active
-			? 'bg-base-300'
-			: ''}"
-	>
-		{#if program.active}
-			<span class="indicator-item badge badge-secondary">active</span>
-		{:else}
-			<span class="indicator-item badge badge-primary">inactive</span>
-		{/if}
-		<div class="card-body">
-			<div class="card-title border-b pb-4 border-primary">{program.name}</div>
-			<ProgramDetails {program} />
-			<div class="card-actions justify-end">
-				<a href="/training/{program.id}" class="btn btn-primary btn-sm">
-					<i class="mi mi-edit-alt text-xl" /> edit
-				</a>
+<div class="flex gap-8 flex-col md:flex-row">
+	{#each $programs as program}
+		<div
+			class="w-full md:w-1/2 card shadow-xl mb-7 border {program.active
+				? 'bg-base-300 border-primary'
+				: 'bg-base-100 border-base-content'}"
+		>
+			<div class="card-body justify-between">
+				<div
+					class="card-title border-b pb-4 justify-between {program.active
+						? 'border-primary'
+						: 'border-base-content'}"
+				>
+					<div>
+						{program.name}
+					</div>
+					{#if program.active}
+						<div
+							class="tooltip flex flex-col text-warning justify-center items-center"
+							data-tip="Active program"
+						>
+							<iconify-icon icon="lucide:star" width="24" />
+							<span class="text-xs pt-1">active</span>
+						</div>
+					{:else}
+						<div
+							class="tooltip flex flex-col justify-center items-center"
+							data-tip="Program is not active"
+						>
+							<iconify-icon icon="lucide:star-off" width="24" />
+							<span class="text-xs pt-1">not active</span>
+						</div>
+					{/if}
+				</div>
+				<ProgramDetails {program} />
+				<div class="card-actions justify-end">
+					<a
+						href="/training/{program.id}"
+						class="btn {program.active ? 'btn-primary' : 'btn-outline hover:btn-primary'}"
+					>
+						<iconify-icon icon="lucide:edit" width="24" />
+						<span class="pl-1">edit</span>
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
-{/each}
+	{/each}
+</div>
