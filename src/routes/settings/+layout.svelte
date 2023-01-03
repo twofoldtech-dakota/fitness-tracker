@@ -28,7 +28,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="px-7 pb-7 w-full mb-max:bg-base-200 mb-max:pt-5">
+	<div class="mb-max:px-3 sm:px-7 pb-7 w-full mb-max:bg-base-200 mb-max:pt-5 mb-max:rounded-b-xl">
 		<slot />
 	</div>
 </div>

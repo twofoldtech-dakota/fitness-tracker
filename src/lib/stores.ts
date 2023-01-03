@@ -39,6 +39,22 @@ export const loadPrograms = async () => {
 };
 loadPrograms();
 
+export const createDaysForProgram = async (name: string, active: boolean, label: string, categories: string, program_id: number) => { 
+    const { data, error } = await supabaseClient
+    .from('Days')
+    .upsert({ 
+        name, 
+        active, 
+        label,
+        categories, 
+        program_id
+    }).select('*')
+
+    if(error) {
+        return console.error(error);
+    }
+}
+
 export const createProgram = async (name: string, active: boolean, week: Array<Day>, duration: number, template: string, user_id: string | unknown) => {
     const { data, error } = await supabaseClient
     .from('Programs')

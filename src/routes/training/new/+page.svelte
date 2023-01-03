@@ -16,41 +16,6 @@
 	};
 	let onChangeTemplateName: string;
 	let onChangeDuration: number;
-	let monday: Day = {
-		active: false,
-		lifts: [],
-		name: 'monday'
-	};
-	let tuesday: Day = {
-		active: false,
-		lifts: [],
-		name: 'tuesday'
-	};
-	let wednesday: Day = {
-		active: false,
-		lifts: [],
-		name: 'wednesday'
-	};
-	let thursday: Day = {
-		active: false,
-		lifts: [],
-		name: 'thursday'
-	};
-	let friday: Day = {
-		active: false,
-		lifts: [],
-		name: 'friday'
-	};
-	let saturday: Day = {
-		active: false,
-		lifts: [],
-		name: 'saturday'
-	};
-	let sunday: Day = {
-		active: false,
-		lifts: [],
-		name: 'sunday'
-	};
 
 	const handleSubmit = async () => {
 		try {
@@ -84,13 +49,6 @@
 		else if (active == false) active = true;
 		else active = false;
 	};
-
-	const updateDayStatus = async (day: Day) => {
-		if (day.active == null) day.active = false;
-		else if (day.active == false) day.active = true;
-		else day.active = false;
-		console.log('day', day);
-	};
 	const onTemplateSelectChange = () => {
 		onChangeTemplateName = template.name;
 	};
@@ -98,16 +56,57 @@
 		onChangeDuration = duration.monthCount;
 	};
 
-	const days: Array<string> = [
-		'monday',
-		'tuesday',
-		'wednesday',
-		'thursday',
-		'friday',
-		'saturday',
-		'sunday'
-	];
-	const week: Array<Day> = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
+	let monday: Day = {
+		active: false,
+		lifts: [],
+		name: 'monday',
+		categories: [],
+		label: ''
+	};
+	let tuesday: Day = {
+		active: false,
+		lifts: [],
+		name: 'tuesday',
+		categories: [],
+		label: ''
+	};
+	let wednesday: Day = {
+		active: false,
+		lifts: [],
+		name: 'wednesday',
+		categories: [],
+		label: ''
+	};
+	let thursday: Day = {
+		active: false,
+		lifts: [],
+		name: 'thursday',
+		categories: [],
+		label: ''
+	};
+	let friday: Day = {
+		active: false,
+		lifts: [],
+		name: 'friday',
+		categories: [],
+		label: ''
+	};
+	let saturday: Day = {
+		active: false,
+		lifts: [],
+		name: 'saturday',
+		categories: [],
+		label: ''
+	};
+	let sunday: Day = {
+		active: false,
+		lifts: [],
+		name: 'sunday',
+		categories: [],
+		label: ''
+	};
+
+	let week: Array<Day> = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
 </script>
 
 <div class="block w-full m-auto">
@@ -123,7 +122,7 @@
 		<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
 			<div class="form-control">
 				<label class="label justify-start">
-					<span class="label-text w-[160px]">Program Name:</span>
+					<span class="label-text w-[160px] font-bold">Program Name:</span>
 
 					<input
 						name="name"
@@ -136,7 +135,7 @@
 			</div>
 			<div class="form-control">
 				<label class="label justify-start">
-					<span class="label-text w-[160px]">Template:</span>
+					<span class="label-text w-[160px] font-bold">Template:</span>
 					<select
 						bind:value={template.name}
 						class="select select-bordered w-full max-w-xs"
@@ -153,7 +152,7 @@
 			</div>
 			<div class="form-control">
 				<label class="label justify-start">
-					<span class="label-text w-[160px]">Duration:</span>
+					<span class="label-text w-[160px] font-bold">Duration:</span>
 					<select
 						bind:value={duration.monthCount}
 						class="select select-bordered w-full max-w-xs"
@@ -169,12 +168,12 @@
 					</select>
 				</label>
 			</div>
-			<div class="form-control">
+			<div class="form-control border-2 rounded-xl p-3 my-2">
 				<div
-					class="tooltip tooltip-right w-[160px] text-left"
+					class="tooltip tooltip-right w-[160px] text-left border-b"
 					data-tip="Pick the days you would like to train each week"
 				>
-					<span class="label-text">Training Days </span>
+					<span class="label-text font-extrabold">Training Days </span>
 					<iconify-icon class="text-accent" icon="lucide:info" width="16" />
 				</div>
 				<div class="flex flex-wrap justify-start w-full">
@@ -185,7 +184,7 @@
 			</div>
 			<div class="form-control">
 				<label class="flex justify-start flex-1 label cursor-pointer items-center">
-					<span class="label-text w-[160px]">Active?</span>
+					<span class="label-text w-[160px] font-bold">Active?</span>
 					<div class="flex items-center w-full max-w-xs">
 						<input
 							name="active"

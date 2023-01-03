@@ -4,12 +4,13 @@
 </script>
 
 <div class="flex justify-between items-center pb-4 border-b border-base-content mb-7">
-	<div class="text-3xl">Programs</div>
 	<a href="/training/new" class="btn btn-outline btn-accent">
-		<iconify-icon icon="lucide:plus-square" width="24" /><span class="pl-1">new</span>
+		<iconify-icon icon="lucide:plus-square" width="24" /><span class="pl-1"
+			>create a new program</span
+		>
 	</a>
 </div>
-<div class="flex gap-8 flex-col flex-wrap sm:flex-row px-6">
+<div class="flex gap-8 flex-col flex-wrap sm:flex-row">
 	{#each $programs as program}
 		<div
 			class="w-full card shadow-xl border {program.active
@@ -27,7 +28,7 @@
 					</div>
 					{#if program.active}
 						<div
-							class="tooltip flex flex-col text-warning justify-center items-center"
+							class="tooltip flex flex-col text-secondary justify-center items-center"
 							data-tip="Active program"
 						>
 							<iconify-icon icon="lucide:star" width="24" />

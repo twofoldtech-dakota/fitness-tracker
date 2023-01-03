@@ -22,7 +22,9 @@ export type Lift = {
 export type Day = {
     name: string,
     lifts: Array<Lift>,
-    active: boolean
+    active: boolean,
+    categories: Array<string>,
+    label: string
 }
 
 export interface NavItem {
