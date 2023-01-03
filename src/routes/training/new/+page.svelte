@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ProgramDay from '$lib/components/ProgramDay.svelte';
 	import type { Day } from '$lib/types';
-	import { createProgram } from '../../../stores/programStore';
+	import { createProgram } from '$lib/stores';
 	import type { PageData } from './$types';
 	export let data: PageData;
 

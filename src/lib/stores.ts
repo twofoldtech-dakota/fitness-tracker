@@ -1,7 +1,10 @@
+import { writable } from 'svelte/store';
 import { goto } from '$app/navigation';
 import { supabaseClient } from '$lib/supabase';
 import type { Day, Program } from '$lib/types';
-import { writable } from 'svelte/store';
+
+export const isOverlayOpen = writable(false);
+
 interface IProgram {
     name: string;
     completed: boolean;

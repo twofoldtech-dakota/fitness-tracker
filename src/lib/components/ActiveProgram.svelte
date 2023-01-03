@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { programs } from '../../stores/programStore';
+	import { programs } from '$lib/stores';
+	import type { Program } from '$lib/types';
 </script>
 
 {#if $programs}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ProgramDetails from '$lib/components/ProgramDetails.svelte';
-	import { programs } from '../../../stores/programStore';
+	import { programs } from '$lib/stores';
 </script>
 
 <div class="flex justify-between items-center pb-4 border-b border-base-content mb-7">

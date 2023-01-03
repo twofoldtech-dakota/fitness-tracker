@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { updateProgram, deleteProgram } from '../../../stores/programStore';
+	import { updateProgram, deleteProgram } from '$lib/stores';
 	import type { Day, Program } from '$lib/types';
 	import Overlay from '$lib/components/Overlay.svelte';
-	import { isOverlayOpen } from '../../../stores/overlayStore';
+	import { isOverlayOpen } from '$lib/stores';
 
 	export let data;
 	let program: Program = data.program;
@@ -95,7 +95,7 @@
 {#if $isOverlayOpen}
 	<Overlay title="Delete this program forever?">
 		<form method="POST" on:submit|preventDefault={handleDelete} class="flex flex-col">
-			<div class="text-2xl font-bold text-primary-content mb-8">
+			<div class="mb-8">
 				Are you sure you want to delete this program forever? You will not be able to retieve this
 				program in the future.
 			</div>
@@ -280,10 +280,8 @@
 					<button
 						on:click|preventDefault={() => isOverlayOpen.set(true)}
 						class="btn btn-outline {program.active ? 'btn-disabled' : ''}"
+						><iconify-icon icon="lucide:trash-2" width="24" /></button
 					>
-						<iconify-icon icon="lucide:trash-2" width="24" />
-						<span class="pl-1">delete</span>
-					</button>
 				</div>
 				<div>
 					<button type="submit" class="btn {loading == true ? 'loading' : 'btn-primary'}">

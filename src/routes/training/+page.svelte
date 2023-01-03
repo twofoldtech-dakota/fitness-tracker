@@ -1,7 +1,6 @@
 <script lang="ts">
 	import FullProgram from '$lib/components/FullProgram.svelte';
-	import type { Program } from '$lib/types';
-	import { programs } from '../../stores/programStore';
+	import { programs } from '$lib/stores';
 </script>
 
 {#each $programs as program}
