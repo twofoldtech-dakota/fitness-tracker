@@ -9,10 +9,10 @@
 		<iconify-icon icon="lucide:plus-square" width="24" /><span class="pl-1">new</span>
 	</a>
 </div>
-<div class="flex gap-8 flex-col md:flex-row">
+<div class="flex gap-8 flex-col flex-wrap sm:flex-row px-6">
 	{#each $programs as program}
 		<div
-			class="w-full md:w-1/2 card shadow-xl mb-7 border {program.active
+			class="w-full card shadow-xl border {program.active
 				? 'bg-base-300 border-primary'
 				: 'bg-base-100 border-base-content'}"
 		>

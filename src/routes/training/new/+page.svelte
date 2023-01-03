@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ProgramDay from '$lib/components/ProgramDay.svelte';
 	import type { Day } from '$lib/types';
 	import { createProgram } from '../../../stores/programStore';
 	import type { PageData } from './$types';
@@ -7,7 +8,6 @@
 	let loading = false;
 	let name = '';
 	let active = false;
-	let completed = false;
 	let template = {
 		name: ''
 	};
@@ -64,7 +64,14 @@
 			week.push(saturday);
 			week.push(sunday);
 
-			createProgram(name, active, week, data?.session?.user.id);
+			createProgram(
+				name,
+				active,
+				week,
+				onChangeDuration,
+				onChangeTemplateName,
+				data?.session?.user.id
+			);
 		} catch (err) {
 			console.error(err);
 		} finally {
@@ -82,6 +89,7 @@
 		if (day.active == null) day.active = false;
 		else if (day.active == false) day.active = true;
 		else day.active = false;
+		console.log('day', day);
 	};
 	const onTemplateSelectChange = () => {
 		onChangeTemplateName = template.name;
@@ -89,9 +97,20 @@
 	const onDurationSelectChange = () => {
 		onChangeDuration = duration.monthCount;
 	};
+
+	const days: Array<string> = [
+		'monday',
+		'tuesday',
+		'wednesday',
+		'thursday',
+		'friday',
+		'saturday',
+		'sunday'
+	];
+	const week: Array<Day> = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
 </script>
 
-<div class="block w-full max-w-md m-auto">
+<div class="block w-full m-auto">
 	<div class="flex flex-col">
 		<a
 			href="/settings/programs"
@@ -151,87 +170,18 @@
 				</label>
 			</div>
 			<div class="form-control">
-				<label class="label justify-start">
-					<div
-						class="tooltip tooltip-right w-[160px] text-left"
-						data-tip="Pick the days you would like to train each week"
-					>
-						<span class="label-text">Training Days </span>
-						<iconify-icon class="text-accent" icon="lucide:info" width="16" />
-					</div>
-					<div class="flex flex-wrap justify-start max-w-xs w-full">
-						<label class="flex-1 label cursor-pointer gap-1 justify-start">
-							<span class="label-text">Monday</span>
-							<input
-								name="monday"
-								type="checkbox"
-								checked={monday.active}
-								on:change={() => updateDayStatus(monday)}
-								class="checkbox"
-							/>
-						</label>
-						<label class="flex-1 label cursor-pointer gap-1 justify-start">
-							<span class="label-text">Tuesday</span>
-							<input
-								name="tuesday"
-								type="checkbox"
-								checked={tuesday.active}
-								on:change={() => updateDayStatus(tuesday)}
-								class="checkbox"
-							/>
-						</label>
-						<label class="flex-1 label cursor-pointer gap-1 justify-start">
-							<span class="label-text">Wednesday</span>
-							<input
-								name="wednesday"
-								type="checkbox"
-								checked={wednesday.active}
-								on:change={() => updateDayStatus(wednesday)}
-								class="checkbox"
-							/>
-						</label>
-						<label class="flex-1 label cursor-pointer gap-1 justify-start">
-							<span class="label-text">Thursday</span>
-							<input
-								name="thursday"
-								type="checkbox"
-								checked={thursday.active}
-								on:change={() => updateDayStatus(thursday)}
-								class="checkbox"
-							/>
-						</label>
-						<label class="flex-1 label cursor-pointer gap-1 justify-start">
-							<span class="label-text">Friday</span>
-							<input
-								name="friday"
-								type="checkbox"
-								checked={friday.active}
-								on:change={() => updateDayStatus(friday)}
-								class="checkbox"
-							/>
-						</label>
-						<label class="flex-1 label cursor-pointer gap-1 justify-start">
-							<span class="label-text">Saturday</span>
-							<input
-								name="saturday"
-								type="checkbox"
-								checked={saturday.active}
-								on:change={() => updateDayStatus(saturday)}
-								class="checkbox"
-							/>
-						</label>
-						<label class="flex-1 label cursor-pointer gap-1 justify-start">
-							<span class="label-text">Sunday</span>
-							<input
-								name="sunday"
-								type="checkbox"
-								checked={sunday.active}
-								on:change={() => updateDayStatus(sunday)}
-								class="checkbox"
-							/>
-						</label>
-					</div>
-				</label>
+				<div
+					class="tooltip tooltip-right w-[160px] text-left"
+					data-tip="Pick the days you would like to train each week"
+				>
+					<span class="label-text">Training Days </span>
+					<iconify-icon class="text-accent" icon="lucide:info" width="16" />
+				</div>
+				<div class="flex flex-wrap justify-start w-full">
+					{#each week as day}
+						<ProgramDay {day} />
+					{/each}
+				</div>
 			</div>
 			<div class="form-control">
 				<label class="flex justify-start flex-1 label cursor-pointer items-center">

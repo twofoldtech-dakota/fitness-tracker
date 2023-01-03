@@ -15,7 +15,9 @@ interface IProgram {
     thursday: boolean,
     friday: boolean,
     saturday: boolean,
-    sunday: boolean
+    sunday: boolean,
+    duration: number,
+    template: string
 }
 export const programs = writable<ArrayLike<IProgram> | []>([]);
 
@@ -34,7 +36,7 @@ export const loadPrograms = async () => {
 };
 loadPrograms();
 
-export const createProgram = async (name: string, active: boolean, week: Array<Day>, user_id: string | unknown) => {
+export const createProgram = async (name: string, active: boolean, week: Array<Day>, duration: number, template: string, user_id: string | unknown) => {
     const { data, error } = await supabaseClient
     .from('Programs')
     .upsert({ 
@@ -47,6 +49,8 @@ export const createProgram = async (name: string, active: boolean, week: Array<D
         friday: week[4].active, 
         saturday: week[5].active, 
         sunday: week[6].active, 
+        duration,
+        template,
         user_id,  
     }).select('*')
 

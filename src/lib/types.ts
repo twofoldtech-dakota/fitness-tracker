@@ -11,7 +11,9 @@ export type Program = {
     thursday: boolean,
     friday: boolean,
     saturday: boolean,
-    sunday: boolean
+    sunday: boolean,
+    duration: number,
+    template: string,
 }
 
 export type Lift = {

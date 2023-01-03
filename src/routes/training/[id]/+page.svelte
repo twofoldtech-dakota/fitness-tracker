@@ -7,6 +7,8 @@
 	export let data;
 	let program: Program = data.program;
 	let loading = false;
+	let onChangeTemplateName: string;
+	let onChangeDuration: number;
 
 	const handleSubmit = async () => {
 		try {
@@ -80,6 +82,14 @@
 				break;
 		}
 	};
+
+	const onTemplateSelectChange = (program: Program) => {
+		program.template = onChangeTemplateName;
+	};
+
+	const onDurationSelectChange = (program: Program) => {
+		program.duration = onChangeDuration;
+	};
 </script>
 
 {#if $isOverlayOpen}
@@ -105,7 +115,8 @@
 		<h1 class="my-8">Edit program</h1>
 		<form method="POST" on:submit|preventDefault={handleSubmit} class="flex flex-col">
 			<div class="form-control">
-				<label class="label">
+				<label class="label justify-start">
+					<span class="label-text w-[160px]">Program Name:</span>
 					<input
 						name="name"
 						type="text"
@@ -115,6 +126,42 @@
 					/>
 				</label>
 			</div>
+			<div class="form-control">
+				<label class="label justify-start">
+					<span class="label-text w-[160px]">Template:</span>
+					<select
+						bind:value={program.template}
+						class="select select-bordered w-full max-w-xs"
+						on:change|preventDefault={() => onTemplateSelectChange(program)}
+					>
+						<option disabled selected>Select a template</option>
+						<option value={'Legs/Push/Pull'}>Legs/Push/Pull</option>
+						<option value={'Powerbuilding'}>Powerbuilding</option>
+						<option value={'Bro Split'}>Bro Split</option>
+						<option value={'Upper/Lower'}>Upper/Lower</option>
+						<option value={'PHAT'}>PHAT</option>
+					</select>
+				</label>
+			</div>
+			<div class="form-control">
+				<label class="label justify-start">
+					<span class="label-text w-[160px]">Duration:</span>
+					<select
+						bind:value={program.duration}
+						class="select select-bordered w-full max-w-xs"
+						on:change|preventDefault={() => onDurationSelectChange(program)}
+					>
+						<option disabled selected>How many months will you run this program?</option>
+						<option value={1}>1</option>
+						<option value={2}>2</option>
+						<option value={3}>3</option>
+						<option value={4}>4</option>
+						<option value={5}>5</option>
+						<option value={6}>6</option>
+					</select>
+				</label>
+			</div>
+
 			<div class="form-control">
 				<label class="label cursor-pointer px-0">
 					<div

@@ -7,6 +7,7 @@
 	import type { PageData } from './$types';
 	import Auth from '$lib/components/Auth.svelte';
 	import { enhance, type SubmitFunction } from '$app/forms';
+	import { page } from '$app/stores';
 
 	onMount(() => {
 		const {
@@ -29,6 +30,43 @@
 	};
 
 	export let data: PageData;
+	const submitUpdateTheme: SubmitFunction = ({ action }) => {
+		const theme = action.searchParams.get('theme');
+		if (theme) {
+			document.documentElement.setAttribute('data-theme', theme);
+		}
+	};
+	const themes = [
+		'light',
+		'dark',
+		'cupcake',
+		'bumblebee',
+		'emerald',
+		'corporate',
+		'synthwave',
+		'retro',
+		'cyberpunk',
+		'valentine',
+		'halloween',
+		'garden',
+		'forest',
+		'aqua',
+		'lofi',
+		'pastel',
+		'fantasy',
+		'wireframe',
+		'black',
+		'luxury',
+		'dracula',
+		'cmyk',
+		'autumn',
+		'business',
+		'acid',
+		'lemonade',
+		'night',
+		'coffee',
+		'winter'
+	];
 </script>
 
 <svelte:head>
@@ -43,9 +81,29 @@
 		<div class="w-full pb-14">
 			<div class="flex p-6 bg-base-300 justify-between items-center">
 				<div class="flex-1">
-					<a href="/" class="text-4xl text-accent">Logo</a>
+					<a href="/" class="text-4xl text-primary">Logo</a>
 				</div>
-				<div class="flex-1 text-accent">
+
+				<div class="flex-1 text-accent flex items-center justify-end">
+					<ul class="menu menu-horizontal px-1 z-50">
+						<li>
+							<button>
+								<iconify-icon icon="lucide:paint-bucket" width="24" />
+							</button>
+							<ul class="p-2 bg-base-100 w-[150px] max-h-96 overflow-y-scroll">
+								<form method="POST" use:enhance={submitUpdateTheme}>
+									{#each themes as theme}
+										<li>
+											<button formaction="/?/setTheme&theme={theme}&redirectTo={$page.url.pathname}"
+												>{theme}</button
+											>
+										</li>
+									{/each}
+								</form>
+							</ul>
+						</li>
+					</ul>
+
 					<form method="POST" use:enhance={submitLogout} class="text-right">
 						<button type="submit" class="btn hover:text-accent items-center hover:underline">
 							<iconify-icon icon="lucide:log-out" width="24" />
