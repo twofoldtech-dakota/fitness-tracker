@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Day, Lift } from '$lib/types';
+	import type { Category, Day, Lift } from '$lib/types';
 	import LiftForm from './LiftForm.svelte';
 
 	export let day: Day;
@@ -13,16 +13,16 @@
 	};
 
 	const updateDayCategories = async (category: Category) => {
-		if (category.active == null) category.active = false;
-		else if (category.active == false) category.active = true;
-		else category.active = false;
-
-		console.log('cat', category);
-		console.log('Categories', dayCategories);
-	};
-	type Category = {
-		name: string;
-		active: boolean;
+		if (category.active == null) {
+			category.active = false;
+			day.categories = day.categories.filter((c) => c.name != category.name);
+		} else if (category.active == false) {
+			category.active = true;
+			day.categories.push(category);
+		} else {
+			category.active = false;
+			day.categories = day.categories.filter((c) => c.name != category.name);
+		}
 	};
 	let dayCategories: Array<Category> = [
 		{ name: 'Back', active: false },
@@ -65,6 +65,7 @@
 									type="checkbox"
 									checked={item.active}
 									class="checkbox checkbox-primary{item.active ? 'bg-green-400' : 'bg-red-400'}"
+									on:change={() => updateDayCategories(item)}
 								/>
 							</label>
 						{/each}

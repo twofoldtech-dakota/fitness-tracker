@@ -1,5 +1,4 @@
 <script lang="ts">
-	export let day;
 	let name = '';
 	let sets = [];
 </script>

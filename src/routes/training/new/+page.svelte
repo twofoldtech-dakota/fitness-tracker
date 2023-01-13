@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ProgramDay from '$lib/components/ProgramDay.svelte';
-	import type { Day } from '$lib/types';
 	import { createProgram } from '$lib/stores';
+	import type { Category, Day } from '$lib/types';
 	import type { PageData } from './$types';
 	export let data: PageData;
 
@@ -16,45 +16,6 @@
 	};
 	let onChangeTemplateName: string;
 	let onChangeDuration: number;
-
-	const handleSubmit = async () => {
-		try {
-			loading = true;
-			let week: Array<Day> = [];
-			week.push(monday);
-			week.push(tuesday);
-			week.push(wednesday);
-			week.push(thursday);
-			week.push(friday);
-			week.push(saturday);
-			week.push(sunday);
-
-			createProgram(
-				name,
-				active,
-				week,
-				onChangeDuration,
-				onChangeTemplateName,
-				data?.session?.user.id
-			);
-		} catch (err) {
-			console.error(err);
-		} finally {
-			loading = false;
-		}
-	};
-
-	const updateActiveStatus = async () => {
-		if (active == null) active = false;
-		else if (active == false) active = true;
-		else active = false;
-	};
-	const onTemplateSelectChange = () => {
-		onChangeTemplateName = template.name;
-	};
-	const onDurationSelectChange = () => {
-		onChangeDuration = duration.monthCount;
-	};
 
 	let monday: Day = {
 		active: false,
@@ -106,7 +67,45 @@
 		label: ''
 	};
 
-	let week: Array<Day> = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
+	const handleSubmit = async () => {
+		try {
+			loading = true;
+			let days: Array<Day> = [];
+			days.push(monday);
+			days.push(tuesday);
+			days.push(wednesday);
+			days.push(thursday);
+			days.push(friday);
+			days.push(saturday);
+			days.push(sunday);
+			createProgram(
+				name,
+				active,
+				days,
+				onChangeDuration,
+				onChangeTemplateName,
+				data?.session?.user.id
+			);
+		} catch (err) {
+			console.error(err);
+		} finally {
+			loading = false;
+		}
+	};
+
+	const updateActiveStatus = async () => {
+		if (active == null) active = false;
+		else if (active == false) active = true;
+		else active = false;
+	};
+	const onTemplateSelectChange = () => {
+		onChangeTemplateName = template.name;
+	};
+	const onDurationSelectChange = () => {
+		onChangeDuration = duration.monthCount;
+	};
+
+	let days: Array<Day> = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
 </script>
 
 <div class="block w-full m-auto">
@@ -141,7 +140,7 @@
 						class="select select-bordered w-full max-w-xs"
 						on:change|preventDefault={onTemplateSelectChange}
 					>
-						<option disabled selected>Select a template</option>
+						<option value={''} selected>Build my own</option>
 						<option value={'Legs/Push/Pull'}>Legs/Push/Pull</option>
 						<option value={'Powerbuilding'}>Powerbuilding</option>
 						<option value={'Bro Split'}>Bro Split</option>
@@ -168,20 +167,22 @@
 					</select>
 				</label>
 			</div>
-			<div class="form-control border-2 rounded-xl p-3 my-2">
-				<div
-					class="tooltip tooltip-right w-[160px] text-left border-b"
-					data-tip="Pick the days you would like to train each week"
-				>
-					<span class="label-text font-extrabold">Training Days </span>
-					<iconify-icon class="text-accent" icon="lucide:info" width="16" />
+			{#if template.name == ''}
+				<div class="form-control border-2 rounded-xl p-3 my-2">
+					<div
+						class="tooltip tooltip-right w-[160px] text-left border-b"
+						data-tip="Pick the days you would like to train each week"
+					>
+						<span class="label-text font-extrabold">Training Days </span>
+						<iconify-icon class="text-accent" icon="lucide:info" width="16" />
+					</div>
+					<div class="flex flex-wrap justify-start w-full">
+						{#each days as day}
+							<ProgramDay {day} />
+						{/each}
+					</div>
 				</div>
-				<div class="flex flex-wrap justify-start w-full">
-					{#each week as day}
-						<ProgramDay {day} />
-					{/each}
-				</div>
-			</div>
+			{/if}
 			<div class="form-control">
 				<label class="flex justify-start flex-1 label cursor-pointer items-center">
 					<span class="label-text w-[160px] font-bold">Active?</span>
